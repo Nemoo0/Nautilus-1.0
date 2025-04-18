@@ -17,4 +17,18 @@ L'utilisateur peut lancer un tri intelligent dans son dossier Téléchargements 
 
 ## 📁 Structure du projet
 
-# nautilus-app
+nautilus-app/
+├── main.js           # Processus principal Electron
+├── preload.js        # Bridge sécurisé Node <-> Frontend
+├── src/
+│   ├── index.html    # Interface utilisateur 
+│   ├── renderer.js   # Logique UI et communication IPC
+│   └── style.css     # Feuille de style CSS
+├── utils/
+│   └── nautilus.js   # Moteur de tri
+├── config/
+│   └── config.json   # Règles de tri personnalisables
+├── assets/
+│   └── icon.png      # Icône
+├── package.json      # Dépendances et configuration
+└── README.md         # Documentation
