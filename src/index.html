@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -14,21 +13,22 @@
       <label for="folder-path">📁 Dossier à trier</label>
       <div class="folder-select">
         <input type="text" id="folder-path" readonly />
-        <button id="choose-folder">Choisir un dossier</button>
+        <button id="choose-folder">Parcourir</button>
+        <button id="open-folder" style="display: none;">Ouvrir</button>
       </div>
     </div>
 
     <div class="section">
       <label>
         <input type="checkbox" id="enable-backup" />
-        Activer le backup avant tri
+        Activer la sauvegarde
       </label>
-      <p class="hint">⚠️ Cela peut ralentir l’opération</p>
+      <p class="hint">⚠️ Permet de revenir en arrière</p>
     </div>
 
     <div class="section buttons">
       <button id="sort-btn">Trier</button>
-      <button id="undo-btn" disabled>Annuler le tri</button>
+      <button id="undo-btn" style="display: none;">Annuler le tri</button>
     </div>
 
     <div class="section">

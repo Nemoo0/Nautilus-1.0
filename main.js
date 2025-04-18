@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
@@ -29,6 +29,12 @@ ipcMain.handle('choose-folder', async () => {
   return result.canceled ? null : result.filePaths[0];
 });
 
+ipcMain.handle('open-folder', async (event, folderPath) => {
+  if (folderPath && fs.existsSync(folderPath)) {
+    await shell.openPath(folderPath);
+  }
+});
+
 ipcMain.handle('sort-folder', async (event, folderPath, options) => {
   try {
     if (!folderPath || isPathDangerous(folderPath)) {
@@ -43,7 +49,6 @@ ipcMain.handle('sort-folder', async (event, folderPath, options) => {
       copyRecursive(folderPath, backupPath);
     }
 
-    // 🔄 Relecture dynamique du fichier de configuration
     const config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
     await nautilus.sort(folderPath, config.rules);
 
@@ -60,16 +65,12 @@ ipcMain.handle('undo-sort', async (event, folderPath) => {
       return { success: false, message: "Aucune sauvegarde trouvée." };
     }
 
-    // Supprimer uniquement le contenu du dossier original
     for (const item of fs.readdirSync(folderPath)) {
       const itemPath = path.join(folderPath, item);
       fs.rmSync(itemPath, { recursive: true, force: true });
     }
 
-    // Restaurer depuis le backup
     copyRecursive(backupPath, folderPath);
-
-    // Supprimer le dossier backup
     fs.rmSync(backupPath, { recursive: true, force: true });
 
     return { success: true };
@@ -121,8 +122,8 @@ function isPathDangerous(folderPath) {
   const normalized = path.resolve(folderPath).toLowerCase();
 
   const forbiddenPaths = [
-    '/',                // racine Linux/Mac
-    'c:\\',             // racine Windows
+    '/',                
+    'c:\\',             
     'c:\\windows',
     'c:\\program files',
     '/system',

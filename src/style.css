@@ -12,7 +12,7 @@ h1 {
   margin-bottom: 30px;
 }
 
-section {
+.section {
   margin-bottom: 30px;
 }
 
@@ -20,6 +20,12 @@ input[type="text"] {
   padding: 8px;
   width: 60%;
   margin-right: 10px;
+}
+
+.folder-select {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 button {
@@ -62,4 +68,17 @@ label {
 .rule input {
   flex: 1;
   padding: 6px;
+}
+
+/* Nouvelle classe pour info-bulle sous la checkbox */
+.hint {
+  margin-top: 4px;
+  font-size: 13px;
+  color: #555;
+  font-style: italic;
+}
+
+/* Masquage contrôlé depuis JS */
+#undo-btn.hidden {
+  display: none !important;
 }

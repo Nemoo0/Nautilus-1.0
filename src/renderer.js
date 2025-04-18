@@ -1,5 +1,6 @@
 const folderPathInput = document.getElementById('folder-path');
 const chooseFolderBtn = document.getElementById('choose-folder');
+const openFolderBtn = document.getElementById('open-folder');
 const sortBtn = document.getElementById('sort-btn');
 const undoBtn = document.getElementById('undo-btn');
 const rulesContainer = document.getElementById('rules-container');
@@ -17,8 +18,16 @@ chooseFolderBtn.addEventListener('click', async () => {
     currentFolder = selectedPath;
     folderPathInput.value = selectedPath;
 
+    openFolderBtn.style.display = 'inline-block';
+
     const hasBackup = await window.electronAPI.checkBackup(selectedPath);
-    undoBtn.disabled = !hasBackup;
+    updateUndoButtonVisibility(hasBackup);
+  }
+});
+
+openFolderBtn.addEventListener('click', async () => {
+  if (currentFolder) {
+    await window.electronAPI.openFolder(currentFolder);
   }
 });
 
@@ -37,7 +46,7 @@ sortBtn.addEventListener('click', async () => {
   if (result.success) {
     alert("✅ Tri terminé !");
     const hasBackup = await window.electronAPI.checkBackup(currentFolder);
-    undoBtn.disabled = !hasBackup;
+    updateUndoButtonVisibility(hasBackup);
   } else {
     alert("❌ Erreur : " + result.message);
   }
@@ -51,11 +60,25 @@ undoBtn.addEventListener('click', async () => {
   const result = await window.electronAPI.undoSort(currentFolder);
   if (result.success) {
     alert("♻️ Tri annulé et restauration terminée !");
-    undoBtn.disabled = true;
+    updateUndoButtonVisibility(false);
   } else {
     alert("❌ Échec de l'annulation : " + result.message);
   }
 });
+
+// === Sauvegarde : masquer ou afficher bouton Undo ===
+
+backupCheckbox.addEventListener('change', () => {
+  updateUndoButtonVisibility();
+});
+
+function updateUndoButtonVisibility(forceEnabled = null) {
+  const shouldShow = backupCheckbox.checked && (forceEnabled !== false);
+  undoBtn.style.display = shouldShow ? 'inline-block' : 'none';
+  if (typeof forceEnabled === 'boolean') {
+    undoBtn.disabled = !forceEnabled;
+  }
+}
 
 // === Règles de tri ===
 
@@ -134,7 +157,7 @@ async function saveRules() {
 async function init() {
   currentRules = await window.electronAPI.getRules();
   renderRules();
-  undoBtn.disabled = true;
+  updateUndoButtonVisibility(false); // Masqué au début
 }
 
 init();

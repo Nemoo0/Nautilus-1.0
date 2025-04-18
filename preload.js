@@ -7,4 +7,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
   checkBackup: (path) => ipcRenderer.invoke('check-backup', path),
   getRules: () => ipcRenderer.invoke('get-rules'),
   saveRules: (rules) => ipcRenderer.invoke('save-rules', rules),
+  openFolder: (path) => ipcRenderer.invoke('open-folder', path) // ✅ Nouveau handler
 });
