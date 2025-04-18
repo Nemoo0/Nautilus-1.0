@@ -8,15 +8,14 @@ L'utilisateur peut lancer un tri intelligent dans son dossier Téléchargements 
 ## 🚀 Fonctionnalités
 
 - Tri par **extension** ou **mots-clés** dans le nom de fichier
-- Règles personnalisables via un fichier `config.json`
-- Interface utilisateur fidèle à la maquette Figma
+- Règles de tri personnalisables
 - Compatible Windows / macOS / Linux
-- **Aucune dépendance système** comme PHP nécessaire
-
+- **Aucune dépendance système** requises
 ---
 
 ## 📁 Structure du projet
 
+```bash
 nautilus-app/
 ├── main.js           # Processus principal Electron
 ├── preload.js        # Bridge sécurisé Node <-> Frontend
