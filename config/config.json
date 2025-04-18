@@ -97,7 +97,8 @@
     {
       "name": "Icônes",
       "extensions": [
-        ".icns"
+        ".icns",
+        ".ico"
       ],
       "keywords": []
     }

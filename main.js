@@ -43,6 +43,7 @@ ipcMain.handle('sort-folder', async (event, folderPath, options) => {
       copyRecursive(folderPath, backupPath);
     }
 
+    // 🔄 Relecture dynamique du fichier de configuration
     const config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
     await nautilus.sort(folderPath, config.rules);
 
