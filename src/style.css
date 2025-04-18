@@ -1,0 +1,65 @@
+body {
+  font-family: "Segoe UI", sans-serif;
+  background-color: #f8f9fa;
+  margin: 0;
+  padding: 20px 40px;
+  color: #333;
+}
+
+h1 {
+  text-align: center;
+  color: #222;
+  margin-bottom: 30px;
+}
+
+section {
+  margin-bottom: 30px;
+}
+
+input[type="text"] {
+  padding: 8px;
+  width: 60%;
+  margin-right: 10px;
+}
+
+button {
+  padding: 8px 12px;
+  background-color: #357edd;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+button:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+button.delete-rule {
+  background-color: #e74c3c;
+  margin-left: 10px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+#backup-option label {
+  font-weight: normal;
+}
+
+.rule {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.rule input {
+  flex: 1;
+  padding: 6px;
+}

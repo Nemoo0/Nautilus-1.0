@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Nautilus</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Nautilus</h1>
+
+    <div class="section">
+      <label for="folder-path">📁 Dossier à trier</label>
+      <div class="folder-select">
+        <input type="text" id="folder-path" readonly />
+        <button id="choose-folder">Choisir un dossier</button>
+      </div>
+    </div>
+
+    <div class="section">
+      <label>
+        <input type="checkbox" id="enable-backup" />
+        Activer le backup avant tri
+      </label>
+      <p class="hint">⚠️ Cela peut ralentir l’opération</p>
+    </div>
+
+    <div class="section buttons">
+      <button id="sort-btn">Trier</button>
+      <button id="undo-btn" disabled>Annuler le tri</button>
+    </div>
+
+    <div class="section">
+      <h2>Catégories de tri</h2>
+      <div id="rules-container"></div>
+      <button id="add-rule">➕ Ajouter une catégorie</button>
+    </div>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>

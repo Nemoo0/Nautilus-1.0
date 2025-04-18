@@ -1,0 +1,40 @@
+{
+	"name": "nautilus",
+	"version": "1.0.0",
+	"main": "main.js",
+	"description": "Nautilus trie vos fichiers automatiquement.",
+	"scripts": {
+	"start": "electron .",
+	"dist": "electron-builder"
+	},
+	"build": {
+	"appId": "com.nautilus.app",
+	"productName": "Nautilus",
+	"directories": {
+		"output": "dist"
+	},
+	"files": [
+		"**/*",
+		"!dist",
+		"!node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
+		"!**/*.map"
+	],
+	"mac": {
+		"target": "dmg",
+		"icon": "assets/icon.icns"
+	},
+	"win": {
+		"target": "nsis",
+		"icon": "assets/icon.ico"
+	},
+	"linux": {
+		"target": "AppImage",
+		"icon": "assets/icon.png",
+		"category": "Utility"
+	}
+	},
+	"devDependencies": {
+	"electron": "^28.2.0",
+	"electron-builder": "^24.13.1"
+	}
+}

@@ -1,0 +1,105 @@
+{
+  "rules": [
+    {
+      "name": "Images",
+      "extensions": [
+        ".jpg",
+        ".jpeg",
+        ".png",
+        ".gif",
+        ".bmp",
+        ".webp"
+      ],
+      "keywords": []
+    },
+    {
+      "name": "Vidéos",
+      "extensions": [
+        ".mp4",
+        ".mkv",
+        ".avi",
+        ".mov"
+      ],
+      "keywords": []
+    },
+    {
+      "name": "Documents",
+      "extensions": [
+        ".pdf",
+        ".docx",
+        ".doc",
+        ".txt",
+        ".odt",
+        ".xlsx"
+      ],
+      "keywords": []
+    },
+    {
+      "name": "Archives",
+      "extensions": [
+        ".zip",
+        ".rar",
+        ".7z",
+        ".tar",
+        ".gz"
+      ],
+      "keywords": []
+    },
+    {
+      "name": "Musique",
+      "extensions": [
+        ".mp3",
+        ".wav",
+        ".ogg",
+        ".flac"
+      ],
+      "keywords": []
+    },
+    {
+      "name": "Installateurs",
+      "extensions": [
+        ".exe",
+        ".msi",
+        ".dmg",
+        ".pkg"
+      ],
+      "keywords": []
+    },
+    {
+      "name": "Code",
+      "extensions": [
+        ".js",
+        ".ts",
+        ".html",
+        ".css",
+        ".php",
+        ".py",
+        ".cpp",
+        ".cs"
+      ],
+      "keywords": []
+    },
+    {
+      "name": "Torrents",
+      "extensions": [
+        ".torrent"
+      ],
+      "keywords": []
+    },
+    {
+      "name": "Captures d'écran",
+      "extensions": [],
+      "keywords": [
+        "screenshot",
+        "capture"
+      ]
+    },
+    {
+      "name": "Icônes",
+      "extensions": [
+        ".icns"
+      ],
+      "keywords": []
+    }
+  ]
+}
