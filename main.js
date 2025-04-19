@@ -22,8 +22,6 @@ function createWindow() {
 
 app.whenReady().then(createWindow);
 
-// === IPC HANDLERS ===
-
 ipcMain.handle('choose-folder', async () => {
   const result = await dialog.showOpenDialog({ properties: ['openDirectory'] });
   return result.canceled ? null : result.filePaths[0];
@@ -41,6 +39,8 @@ ipcMain.handle('sort-folder', async (event, folderPath, options) => {
       return { success: false, message: "Ce dossier est protégé ou invalide." };
     }
 
+    const webContents = event.sender;
+
     if (options.backupEnabled) {
       const backupPath = getBackupPath(folderPath);
       if (fs.existsSync(backupPath)) {
@@ -50,7 +50,10 @@ ipcMain.handle('sort-folder', async (event, folderPath, options) => {
     }
 
     const config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
-    await nautilus.sort(folderPath, config.rules);
+
+    await nautilus.sort(folderPath, config.rules, progress => {
+      webContents.send('sort-progress', progress);
+    });
 
     return { success: true };
   } catch (err) {
@@ -60,14 +63,22 @@ ipcMain.handle('sort-folder', async (event, folderPath, options) => {
 
 ipcMain.handle('undo-sort', async (event, folderPath) => {
   try {
+    const webContents = event.sender;
     const backupPath = getBackupPath(folderPath);
+
     if (!fs.existsSync(backupPath)) {
       return { success: false, message: "Aucune sauvegarde trouvée." };
     }
 
-    for (const item of fs.readdirSync(folderPath)) {
+    const items = fs.readdirSync(folderPath);
+    const total = items.length;
+    let processed = 0;
+
+    for (const item of items) {
       const itemPath = path.join(folderPath, item);
       fs.rmSync(itemPath, { recursive: true, force: true });
+      processed++;
+      webContents.send('undo-progress', Math.round((processed / total) * 100));
     }
 
     copyRecursive(backupPath, folderPath);
@@ -95,8 +106,6 @@ ipcMain.handle('save-rules', async (event, newRules) => {
   return true;
 });
 
-// === HELPERS ===
-
 function getBackupPath(originalPath) {
   const hash = Buffer.from(originalPath).toString('base64').replace(/[/+=]/g, '');
   return path.join(os.tmpdir(), `.nautilus_backup_${hash}`);
@@ -120,16 +129,8 @@ function copyRecursive(src, dest) {
 
 function isPathDangerous(folderPath) {
   const normalized = path.resolve(folderPath).toLowerCase();
-
   const forbiddenPaths = [
-    '/',                
-    'c:\\',             
-    'c:\\windows',
-    'c:\\program files',
-    '/system',
-    '/bin',
-    '/usr',
-    '/etc',
+    '/', 'c:\\', 'c:\\windows', 'c:\\program files', '/system', '/bin', '/usr', '/etc'
   ].map(p => path.resolve(p).toLowerCase());
 
   return forbiddenPaths.includes(normalized);

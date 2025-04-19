@@ -6,6 +6,8 @@ const undoBtn = document.getElementById('undo-btn');
 const rulesContainer = document.getElementById('rules-container');
 const addRuleBtn = document.getElementById('add-rule');
 const backupCheckbox = document.getElementById('enable-backup');
+const progressContainer = document.getElementById('progress-container');
+const progressBar = document.getElementById('progress-bar');
 
 let currentFolder = null;
 let currentRules = [];
@@ -31,6 +33,31 @@ openFolderBtn.addEventListener('click', async () => {
   }
 });
 
+// === Progression ===
+
+function resetProgressBar() {
+  if (progressBar && progressContainer) {
+    progressBar.value = 0;
+    progressContainer.style.display = 'none';
+  }
+}
+
+function updateProgress(percent) {
+  if (progressBar && progressContainer) {
+    progressContainer.style.display = 'block';
+    progressBar.value = percent;
+  }
+}
+
+// Réception des updates depuis le main process
+window.electronAPI.onSortProgress((percent) => {
+  updateProgress(percent);
+});
+
+window.electronAPI.onUndoProgress((percent) => {
+  updateProgress(percent);
+});
+
 // === Lancer le tri ===
 
 sortBtn.addEventListener('click', async () => {
@@ -39,17 +66,22 @@ sortBtn.addEventListener('click', async () => {
     return;
   }
 
+  resetProgressBar();
+
   const result = await window.electronAPI.sortFolder(currentFolder, {
     backupEnabled: backupCheckbox.checked
   });
 
   if (result.success) {
+    updateProgress(100);
     alert("✅ Tri terminé !");
     const hasBackup = await window.electronAPI.checkBackup(currentFolder);
     updateUndoButtonVisibility(hasBackup);
   } else {
     alert("❌ Erreur : " + result.message);
   }
+
+  setTimeout(resetProgressBar, 1000);
 });
 
 // === Annuler le tri ===
@@ -57,13 +89,19 @@ sortBtn.addEventListener('click', async () => {
 undoBtn.addEventListener('click', async () => {
   if (!currentFolder) return;
 
+  resetProgressBar();
+
   const result = await window.electronAPI.undoSort(currentFolder);
+
   if (result.success) {
+    updateProgress(100);
     alert("♻️ Tri annulé et restauration terminée !");
     updateUndoButtonVisibility(false);
   } else {
     alert("❌ Échec de l'annulation : " + result.message);
   }
+
+  setTimeout(resetProgressBar, 1000);
 });
 
 // === Sauvegarde : masquer ou afficher bouton Undo ===

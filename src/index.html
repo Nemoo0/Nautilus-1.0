@@ -23,13 +23,16 @@
         <input type="checkbox" id="enable-backup" />
         Activer la sauvegarde
       </label>
-      <p class="hint">⚠️ Permet de revenir en arrière</p>
+      <p class="hint">⚠️ Permet de revenir en arrière (le tri prendra plus de temps)</p>
     </div>
 
     <div class="section buttons">
       <button id="sort-btn">Trier</button>
-      <button id="undo-btn" style="display: none;">Annuler le tri</button>
-    </div>
+      <button id="undo-btn" disabled>Annuler le tri</button>
+      <div id="progress-container" style="display: none; margin-top: 10px;">
+        <progress id="progress-bar" value="0" max="100" style="width: 100%; height: 20px;"></progress>
+      </div>      
+    </div>    
 
     <div class="section">
       <h2>Catégories de tri</h2>

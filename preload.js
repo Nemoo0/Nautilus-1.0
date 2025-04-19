@@ -7,5 +7,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   checkBackup: (path) => ipcRenderer.invoke('check-backup', path),
   getRules: () => ipcRenderer.invoke('get-rules'),
   saveRules: (rules) => ipcRenderer.invoke('save-rules', rules),
-  openFolder: (path) => ipcRenderer.invoke('open-folder', path) // ✅ Nouveau handler
+  openFolder: (path) => ipcRenderer.invoke('open-folder', path),
+  onSortProgress: (callback) => ipcRenderer.on('sort-progress', (event, progress) => callback(progress)),
+  onUndoProgress: (callback) => ipcRenderer.on('undo-progress', (event, progress) => callback(progress)),
 });
